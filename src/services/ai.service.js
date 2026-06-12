@@ -1,5 +1,6 @@
 const { GoogleGenAI } = require("@google/genai");
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
+const chromium = require("@sparticuz/chromium");
 
 const ai = new GoogleGenAI({
     apiKey: process.env.GOOGLE_GENAI_API_KEY
@@ -110,13 +111,13 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
 
 async function generatePdfFromHtml(htmlContent) {
     const browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        args: chromium.args,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
     });
 
     const page = await browser.newPage();
 
-    // block external resource requests to prevent timeout
     await page.setRequestInterception(true);
     page.on('request', (req) => {
         const blockedTypes = ['image', 'stylesheet', 'font', 'media'];
@@ -128,7 +129,7 @@ async function generatePdfFromHtml(htmlContent) {
     });
 
     await page.setContent(htmlContent, {
-        waitUntil: 'domcontentloaded', // ← faster than networkidle0
+        waitUntil: 'domcontentloaded',
         timeout: 30000
     });
 
