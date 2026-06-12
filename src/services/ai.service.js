@@ -98,7 +98,7 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
     - Score the match honestly between 0-100 based on how well the candidate's current profile aligns with the JD.`;
 
     const response = await ai.models.generateContent({
-        model: "gemini-1.5-flash",
+        model: "gemini-1.5-pro",
         contents: prompt,
         config: {
             responseMimeType: "application/json",
@@ -196,7 +196,7 @@ async function generateResumePdf({ resume, selfDescription, jobDescription }) {
                     `
 
         const response = await ai.models.generateContent({
-            model: "gemini-1.5-flash",
+            model: "gemini-1.5-pro",
             contents: prompt,
             config: {
                 responseMimeType: "application/json",
@@ -220,7 +220,7 @@ async function generateResumePdf({ resume, selfDescription, jobDescription }) {
         const pdfBuffer = await generatePdfFromHtml(jsonContent.html);
 
         return pdfBuffer;
-        
+
     } catch (err) {
         console.error("Resume PDF error:", err);
         throw err;
