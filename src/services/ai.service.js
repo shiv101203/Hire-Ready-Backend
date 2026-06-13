@@ -136,7 +136,7 @@ async function generatePdfFromHtml(htmlContent) {
         args: Array.isArray(chromium.args)
             ? chromium.args
             : ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
-        executablePath: await chromium.executablePath(),
+        executablePath: await chromium.executablePath,
         headless: chromium.headless,
     });
 
