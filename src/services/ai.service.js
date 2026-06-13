@@ -97,7 +97,7 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
     - Create a realistic day-by-day preparation plan of minimum 30 days. Each day must have one focused topic and at least 3 specific actionable tasks. The plan must cover all identified skill gaps, core technologies in the JD, interview preparation, DSA practice, and mock interview sessions in the final days. Do not rush topics — give each concept enough days based on its complexity.
     - Score the match honestly between 0-100 based on how well the candidate's current profile aligns with the JD.`;
 
-    const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-pro";
+    const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
     const response = await ai.models.generateContent({
         model: GEMINI_MODEL,
@@ -197,7 +197,7 @@ async function generateResumePdf({ resume, selfDescription, jobDescription }) {
                         - A single-page resume is the industry standard and is strongly preferred by companies. Focus on quality over quantity and include all information that maximizes the candidate's chances of getting an interview call for the given job description.
                     `
 
-        const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-pro";
+        const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
         const response = await ai.models.generateContent({
             model: GEMINI_MODEL,
