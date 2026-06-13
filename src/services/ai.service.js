@@ -136,7 +136,9 @@ async function generatePdfFromHtml(htmlContent) {
         args: Array.isArray(chromium.args)
             ? chromium.args
             : ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
-        executablePath: await chromium.executablePath,
+        executablePath: await chromium.executablePath(
+            "https://github.com/Sparticuz/chromium/releases/download/v131.0.1/chromium-v131.0.1-pack.x64.tar"
+        ),
         headless: chromium.headless,
     });
 
