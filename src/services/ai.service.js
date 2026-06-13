@@ -108,23 +108,34 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
         }
     });
 
-    const text =
-        response.candidates?.[0]?.content?.parts?.[0]?.text;
+    const rawText = response.candidates?.[0]?.content?.parts?.[0]?.text;
 
-    if (!text) {
+    if (!rawText) {
         throw new Error("Gemini returned empty response");
     }
 
-    return JSON.parse(text);
+    const cleanedText = rawText
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
+
+    const jsonStart = cleanedText.indexOf("{");
+    const jsonEnd = cleanedText.lastIndexOf("}");
+
+    if (jsonStart === -1 || jsonEnd === -1) {
+        throw new Error("Invalid JSON from Gemini");
+    }
+
+    const finalJson = cleanedText.slice(jsonStart, jsonEnd + 1);
+
+    return JSON.parse(finalJson);
 }
 
 async function generatePdfFromHtml(htmlContent) {
     const browser = await puppeteer.launch({
-        args: [
-            ...chromium.args,
-            "--no-sandbox",
-            "--disable-setuid-sandbox"
-        ],
+        args: Array.isArray(chromium.args)
+            ? chromium.args
+            : ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
         executablePath: await chromium.executablePath(),
         headless: chromium.headless,
     });
